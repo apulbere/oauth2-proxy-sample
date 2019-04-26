@@ -1,7 +1,6 @@
 package com.apulbere.oauthserver.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -24,40 +23,21 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
     @Override
-    public void configure(final ClientDetailsServiceConfigurer clients) throws Exception { // @formatter:off
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("sampleClientId")
-                .authorizedGrantTypes("implicit")
-                .scopes("read", "write", "foo", "bar")
-                .autoApprove(false)
-                .accessTokenValiditySeconds(3600)
-                .redirectUris("http://localhost:8083/","http://localhost:8086/")
+                .withClient("DesertBluffs")
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("all")
+                .secret(passwordEncoder().encode(""))
                 .and()
-                .withClient("fooClientIdPassword")
-                .secret(passwordEncoder().encode("secret"))
-                .authorizedGrantTypes("password", "authorization_code", "refresh_token", "client_credentials")
-                .scopes("foo", "read", "write")
-                .accessTokenValiditySeconds(3600)       // 1 hour
-                .refreshTokenValiditySeconds(2592000)  // 30 days
-                .redirectUris("http://www.example.com","http://localhost:8089/","http://localhost:8080/login/oauth2/code/custom","http://localhost:8080/ui-thymeleaf/login/oauth2/code/custom", "http://localhost:8080/authorize/oauth2/code/bael", "http://localhost:8080/login/oauth2/code/bael")
-                .and()
-                .withClient("barClientIdPassword")
-                .secret(passwordEncoder().encode("secret"))
-                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                .scopes("bar", "read", "write")
-                .accessTokenValiditySeconds(3600)       // 1 hour
-                .refreshTokenValiditySeconds(2592000)  // 30 days
-                .and()
-                .withClient("testImplicitClientId")
-                .authorizedGrantTypes("implicit")
-                .scopes("read", "write", "foo", "bar")
-                .autoApprove(true)
-                .redirectUris("http://www.example.com");
-    } // @formatter:on
+                .withClient("StrexCorp")
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("all")
+                .secret(passwordEncoder().encode("smiling_god"));
+    }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
@@ -100,7 +80,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Bean
     @Primary
-    public DefaultTokenServices tokenServices() {
+    DefaultTokenServices tokenServices() {
         final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
         defaultTokenServices.setSupportRefreshToken(true);
