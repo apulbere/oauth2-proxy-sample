@@ -1,3 +1,5 @@
 server:
-  servlet.context-path: /spring-security-oauth-server
+  servlet.context-path: /oauthserver
   port: 8081
+
+logging.level.org.springframework.security: DEBUG

@@ -3,14 +3,16 @@ server:
 zuul:
   sensitiveHeaders: Cookie,Set-Cookie
   routes:
-    spring-security-oauth-resource:
-      path: /spring-security-oauth-resource/**
-      url: http://localhost:8082/spring-security-oauth-resource
+    resource1:
+      path: /resource1/**
+      url: http://localhost:8082/resourceserver1
     oauth:
       path: /oauth/**
-      url: http://localhost:8081/spring-security-oauth-server/oauth
+      url: http://localhost:8081/oauthserver/oauth
 security:
   oauth2:
     resource:
       jwt:
         key-value: 123
+
+logging.level.org.springframework.security: DEBUG

@@ -1,0 +1,10 @@
+server:
+  servlet.context-path: /resourceserver1
+  port: 8082
+#security:
+#  oauth2:
+#    resource.token-info-uri: http://localhost:8080/oauth/check_token
+#    client.client-id: StrexCorp
+#    client.client-secret: smiling_god
+
+logging.level.org.springframework.security: DEBUG
